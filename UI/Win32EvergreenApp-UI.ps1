@@ -18,21 +18,34 @@ $xamlFile = @'
             <RowDefinition Height="33*"/>
             <RowDefinition Height="29*"/>
         </Grid.RowDefinitions>
+
+        <!-- Title -->
         <TextBlock HorizontalAlignment="Left" Margin="30,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="356" FontSize="20" TextAlignment="Left" FontWeight="Bold" Text="Win32EvergreenApp"/>
+        
+        <!-- Help & Settings -->
         <Button x:Name="button_help" Content="Help" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top" Background="White" Width="100"/>
         <Button x:Name="button_settings" Content="Settings" HorizontalAlignment="Left" Margin="140,50,0,0" VerticalAlignment="Top" Background="White" Width="100"/>
-        <TextBox x:Name="text_output" HorizontalAlignment="Left" Margin="30,0,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Width="332" Height="161" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Grid.Row="1"/>
-        <TextBox x:Name="text_grouptag" HorizontalAlignment="Left" Margin="36,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" BorderBrush="Black"/>
-        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="234,235,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderBrush="Black" Background="#32CD32" FontWeight="Bold"/>
+        
+        <!-- Upload, Edit, Remove -->
         <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderBrush="Black"/>
         <Button x:Name="button_removeEvergreenApp" Content="Remove Evergreen App" HorizontalAlignment="Right" Margin="0,0,310,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#ff3d40" Grid.RowSpan="2" FontWeight="Bold" BorderBrush="Black"/>
-        <TextBlock x:Name="text_copyright" HorizontalAlignment="Right" Margin="0,0,30,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Row="1"><Run Language="en-us" Text="Author"/></TextBlock>        
-        <DataGrid x:Name="dataGrid_EvergreenApps" HorizontalAlignment="Left" Margin="400,10,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False">
+
+        <!-- Add -->
+        <TextBox x:Name="text_addApp" HorizontalAlignment="Left" Margin="30,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" BorderBrush="Black"/>
+        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderBrush="Black" Background="#32CD32" FontWeight="Bold"/>
+
+        <!-- App GridView -->
+        <DataGrid x:Name="dataGrid_EvergreenApps" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Version" Binding="{Binding Version}" />
+                <DataGridTextColumn Header="Language" Binding="{Binding Language}" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- Copyright -->
+        <TextBlock x:Name="text_copyright" HorizontalAlignment="Right" Margin="0,0,30,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Row="1"><Run Language="en-us" Text="Author"/></TextBlock>        
+
     
     </Grid>
 </Window>
@@ -67,11 +80,18 @@ $xaml.SelectNodes("//*[@Name]") | ForEach-Object {
 
 # Get-Variable var_*
 
+function Show-AppGridView(){
+    # Populate the DataGrid
+    $AllLocalEvergreenApps = Get-LocalEvergreenApp -All
+    $var_dataGrid_EvergreenApps.ItemsSource = $AllLocalEvergreenApps
+}
+
 $var_button_addEvergreenApp.Add_Click{
     # call add function
-    Add-EvergreenApp
+    Add-EvergreenApp -Search $var_text_addApp.Text
 
-    # load apps for overview
+    # re-load apps for overview
+    Show-AppGridView
 }
 
 $var_button_UploadApp.Add_Click{
@@ -92,9 +112,6 @@ $var_button_settings.Add_Click{
 $var_text_copyright.Text = "Florian Salzmann | scloud.work | v0.1"
 
 
-# Populate the DataGrid
-$AllLocalEvergreenApps = Get-LocalEvergreenApp -All
-$var_dataGrid_EvergreenApps.ItemsSource = $AllLocalEvergreenApps
-
 # Open GUI
+Show-AppGridView
 $Null = $window.ShowDialog()

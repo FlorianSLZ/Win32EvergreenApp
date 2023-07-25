@@ -24,7 +24,11 @@ function Get-LocalEvergreenApp()
 
         [parameter(Mandatory = $false, HelpMessage = "Local Name of the App/Folder")]
         [ValidateNotNullOrEmpty()]
-        [switch]$AppName
+        [switch]$AppName,
+
+        [parameter(Mandatory = $false, HelpMessage = "Local repo Path where the Apps and template are stored")]
+        [ValidateNotNullOrEmpty()]
+        [string]$RepoPath = "$([Environment]::GetFolderPath("MyDocuments"))\Win32EvergreenApp"
 
     )
 

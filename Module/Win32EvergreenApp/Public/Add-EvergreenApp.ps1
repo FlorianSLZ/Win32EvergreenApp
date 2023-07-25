@@ -22,6 +22,10 @@ function Add-EvergreenApp()
         [ValidateNotNullOrEmpty()]
         [array]$UpdateApp, 
 
+        [parameter(Mandatory = $false, HelpMessage = "Serch for Evergreen App online.")]
+        [ValidateNotNullOrEmpty()]
+        [string]$Search, 
+
         [parameter(Mandatory = $false, HelpMessage = "Local repo Path where the Apps and template are stored")]
         [ValidateNotNullOrEmpty()]
         [string]$RepoPath = "$([Environment]::GetFolderPath("MyDocuments"))\Win32EvergreenApp",
@@ -48,11 +52,20 @@ function Add-EvergreenApp()
             Expand-Archive $localZIP "$RepoPath\_template"
             Remove-Item $localZIP
         }
-        $AppInfo = Get-Content "$RepoPath\_template\AppInfo.json" -Raw | ConvertFrom-Json
-    
-        $App2search = Read-Host "Which App would you like to add?"
+        
+        if($Search)
+        {
+            $App2search = $Search
+        }
+        else
+        {
+            $App2search = Read-Host "Which App would you like to add?"
+        }
+        
         $AppAviable = Find-EvergreenApp -Name $App2search
         $App2addAll = $AppAviable | Out-GridView -OutputMode Single -Title "Which one do you want to add?"
+
+        $AppInfo = Get-Content "$RepoPath\_template\AppInfo.json" -Raw | ConvertFrom-Json
 
         $AppInfo.Name          = $App2addAll.Application
         $AppInfo.EvergreenName = $App2addAll.Name

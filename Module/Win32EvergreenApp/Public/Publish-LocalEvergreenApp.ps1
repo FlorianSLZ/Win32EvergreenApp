@@ -17,7 +17,11 @@ function Publish-LocalEvergreenApp()
 
         [parameter(Mandatory = $false, HelpMessage = "Allows to select multiple Apps instead of one.")]
         [ValidateNotNullOrEmpty()]
-        [switch]$Multiple
+        [switch]$Multiple,
+
+        [parameter(Mandatory = $false, HelpMessage = "Local repo Path where the Apps and template are stored")]
+        [ValidateNotNullOrEmpty()]
+        [string]$RepoPath = "$([Environment]::GetFolderPath("MyDocuments"))\Win32EvergreenApp"
 
     )
 

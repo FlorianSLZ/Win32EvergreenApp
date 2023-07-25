@@ -16,7 +16,11 @@ function Get-LatesInstaller()
     param (
         [parameter(Mandatory = $false, HelpMessage = "EvergreenApp you can get by callin Get-EvergreenApp -Name AppName")]
         [ValidateNotNullOrEmpty()]
-        [array]$EvergreenApp
+        [array]$EvergreenApp,
+
+        [parameter(Mandatory = $false, HelpMessage = "Local repo Path where the Apps and template are stored")]
+        [ValidateNotNullOrEmpty()]
+        [string]$RepoPath = "$([Environment]::GetFolderPath("MyDocuments"))\Win32EvergreenApp"
 
     )
 
