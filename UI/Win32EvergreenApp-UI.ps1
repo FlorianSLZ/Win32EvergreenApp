@@ -27,6 +27,13 @@ $xamlFile = @'
         <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderBrush="Black"/>
         <Button x:Name="button_removeEvergreenApp" Content="Remove Evergreen App" HorizontalAlignment="Right" Margin="0,0,310,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#ff3d40" Grid.RowSpan="2" FontWeight="Bold" BorderBrush="Black"/>
         <TextBlock x:Name="text_copyright" HorizontalAlignment="Right" Margin="0,0,30,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Row="1"><Run Language="en-us" Text="Author"/></TextBlock>        
+        <DataGrid x:Name="dataGrid_EvergreenApps" HorizontalAlignment="Left" Margin="400,10,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    
     </Grid>
 </Window>
 
@@ -60,35 +67,6 @@ $xaml.SelectNodes("//*[@Name]") | ForEach-Object {
 
 # Get-Variable var_*
 
-
-
-
-#Time and Date
-
-$timer1 = New-Object 'System.Windows.Forms.Timer'
-$timer1_Tick={
-    $var_text_time.Text = (Get-Date).ToString("HH:mm:ss")
-}
-
-$timer1.Enabled = $True
-$timer1.Interval = 1000 # in ms -> 1000 = Update clock every second
-$timer1.add_Tick($timer1_Tick)
-
-$var_text_date.Text = (Get-Date).ToString("MM:dd:yyyy")
-
-
-
-$var_text_serialnumber.Text = (Get-WmiObject -class win32_bios).SerialNumber
-$var_text_devicemodel.Text = (Get-CimInstance -ClassName Win32_ComputerSystem).Model
-$var_text_devicename.Text = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-$var_text_manufacturer.Text = (Get-CimInstance -ClassName Win32_ComputerSystem).Manufacturer
-$var_text_freespace.Text = (Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object -Property DeviceID,@{'Name' = 'FreeSpace (GB)'; Expression= { [int]($_.FreeSpace / 1GB) }} | Measure-Object -Property 'FreeSpace (GB)' -Sum).Sum
-
-
-
-
-
-
 $var_button_addEvergreenApp.Add_Click{
     # call add function
     Add-EvergreenApp
@@ -96,13 +74,9 @@ $var_button_addEvergreenApp.Add_Click{
     # load apps for overview
 }
 
-
-
-
-
 $var_button_UploadApp.Add_Click{
     # select app
-
+    
     # upload to intune
     Publish-LocalEvergreenApp -choose selected
 }
@@ -117,6 +91,10 @@ $var_button_settings.Add_Click{
 
 $var_text_copyright.Text = "Florian Salzmann | scloud.work | v0.1"
 
-# Open GUI
 
+# Populate the DataGrid
+$AllLocalEvergreenApps = Get-LocalEvergreenApp -All
+$var_dataGrid_EvergreenApps.ItemsSource = $AllLocalEvergreenApps
+
+# Open GUI
 $Null = $window.ShowDialog()
