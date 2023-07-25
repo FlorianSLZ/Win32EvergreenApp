@@ -18,13 +18,21 @@ function Get-LocalEvergreenApp()
         [ValidateNotNullOrEmpty()]
         [switch]$Multiple, 
 
+        [parameter(Mandatory = $false, HelpMessage = "Get all local present Apps. ")]
+        [ValidateNotNullOrEmpty()]
+        [switch]$All, 
+
         [parameter(Mandatory = $false, HelpMessage = "Local Name of the App/Folder")]
         [ValidateNotNullOrEmpty()]
         [switch]$AppName
 
     )
 
-    if($Multiple)
+    if($All)
+    {
+        $AllAppFolders = Get-ChildItem $RepoPath -Directory
+    }
+    elseif($Multiple)
     {
         $AllAppFolders = Get-ChildItem $RepoPath -Directory | Out-GridView -OutputMode Multiple
     }
