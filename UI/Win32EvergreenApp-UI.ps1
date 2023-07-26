@@ -27,15 +27,22 @@ $xamlFile = @'
         <Button x:Name="button_settings" Content="Settings" HorizontalAlignment="Left" Margin="140,50,0,0" VerticalAlignment="Top" Background="White" Width="100"/>
         
         <!-- Upload, Edit, Remove -->
-        <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderBrush="Black"/>
-        <Button x:Name="button_removeEvergreenApp" Content="Remove Evergreen App" HorizontalAlignment="Right" Margin="0,0,310,50" VerticalAlignment="Bottom" Width="250" Height="26" Background="#ff3d40" Grid.RowSpan="2" FontWeight="Bold" BorderBrush="Black"/>
+        <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderThickness="0"/>
+        <Button x:Name="button_editApp" Content="Edit App" HorizontalAlignment="Right" Margin="0,0,200,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderThickness="0"/>
+        <Button x:Name="button_removeEvergreenApp" Content="Remove App" HorizontalAlignment="Right" Margin="0,0,370,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#ff3d40" Grid.RowSpan="2" FontWeight="Bold" BorderThickness="0"/>
 
         <!-- Add -->
-        <TextBox x:Name="text_addApp" HorizontalAlignment="Left" Margin="30,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" BorderBrush="Black"/>
-        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderBrush="Black" Background="#32CD32" FontWeight="Bold"/>
+        <TextBox x:Name="text_addApp" HorizontalAlignment="Left" Margin="30,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" Background="#b8b8b8" BorderThickness="0"/>
+        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderThickness="0" Background="#32CD32" FontWeight="Bold"/>
 
         <!-- App GridView -->
-        <DataGrid x:Name="dataGrid_EvergreenApps" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False">
+        <DataGrid x:Name="dataGrid_processes" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" CanUserAddRows="False" AlternatingRowBackground="#F2F2F2" RowBackground="#EFEFEF" Grid.RowSpan="2" BorderThickness="0" HeadersVisibility="Column" >
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="6" />
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Version" Binding="{Binding Version}" />
