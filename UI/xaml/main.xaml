@@ -8,28 +8,39 @@
         Title="Win32EvergreenApp UI" Height="600" Width="900" WindowStartupLocation="CenterScreen">
     <Grid Background="#fefefe">
         <Grid.RowDefinitions>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="29*"/>
+            <RowDefinition Height="30"/>   <!-- Header row with fixed height of 30 -->
+            <RowDefinition Height="*"/>    <!-- Content row that takes the remaining height -->
         </Grid.RowDefinitions>
 
+        <!-- Header (Help & Settings in a row with black background) -->
+        <Grid Grid.Row="0" Background="#262626">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>   <!-- Left space for the title -->
+                <ColumnDefinition Width="*"/>      <!-- Space for the buttons to expand -->
+                <ColumnDefinition Width="Auto"/>   <!-- Right space for spacing if needed -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Help & Settings in a row -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Background="#262626" HorizontalAlignment="Left">
+                <Button x:Name="button_help" Content="Help" Margin="30,0,0,0" Background="#262626" Foreground="#fefefe" BorderThickness="0" Width="80"/>
+                <Button x:Name="button_settings" Content="Settings" Background="#262626" Foreground="#fefefe" BorderThickness="0" Width="80"/>
+            </StackPanel>
+        </Grid>
+
         <!-- Title -->
-        <TextBlock HorizontalAlignment="Left" Margin="30,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="356" FontSize="20" TextAlignment="Left" FontWeight="Bold" Text="Win32EvergreenApp"/>
-        
-        <!-- Help & Settings -->
-        <Button x:Name="button_help" Content="Help" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Top" Background="White" Width="80"/>
-        <Button x:Name="button_settings" Content="Settings" HorizontalAlignment="Left" Margin="110,0,0,0" VerticalAlignment="Top" Background="White" Width="80"/>
-        
+        <TextBlock Text="Win32EvergreenApp" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" Margin="30,30,0,0" Grid.Row="1" />
+
         <!-- Upload, Edit, Remove -->
-        <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderThickness="0"/>
-        <Button x:Name="button_editApp" Content="Edit App" HorizontalAlignment="Right" Margin="0,0,200,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" Grid.Row="1" FontWeight="Bold" BorderThickness="0"/>
-        <Button x:Name="button_removeEvergreenApp" Content="Remove App" HorizontalAlignment="Right" Margin="0,0,370,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#ff3d40" Grid.RowSpan="2" FontWeight="Bold" BorderThickness="0"/>
+        <Button x:Name="button_UploadApp" Content="Upload App to Intune" HorizontalAlignment="Right" Margin="0,0,30,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" FontWeight="Bold" BorderThickness="0" Grid.Row="1"/>
+        <Button x:Name="button_editApp" Content="Edit App" HorizontalAlignment="Right" Margin="0,0,200,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#FFA1CEFF" FontWeight="Bold" BorderThickness="0" Grid.Row="1"/>
+        <Button x:Name="button_removeEvergreenApp" Content="Remove App" HorizontalAlignment="Right" Margin="0,0,370,50" VerticalAlignment="Bottom" Width="150" Height="26" Background="#ff3d40" FontWeight="Bold" BorderThickness="0" Grid.Row="1"/>
 
         <!-- Add -->
-        <TextBox x:Name="text_addApp" HorizontalAlignment="Left" Margin="30,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" Background="#b8b8b8" BorderThickness="0"/>
-        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderThickness="0" Background="#32CD32" FontWeight="Bold"/>
+        <TextBox x:Name="text_addApp" HorizontalAlignment="Left" Margin="30,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="192" Height="30" FontSize="14" Background="#b8b8b8" BorderThickness="0" Grid.Row="1"/>
+        <Button x:Name="button_addEvergreenApp" Content="Add Evergreen App" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderThickness="0" Background="#32CD32" FontWeight="Bold" Grid.Row="1"/>
 
         <!-- App GridView -->
-        <DataGrid x:Name="dataGrid_processes" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" CanUserAddRows="False" AlternatingRowBackground="#F2F2F2" RowBackground="#EFEFEF" Grid.RowSpan="2" BorderThickness="0" HeadersVisibility="Column" >
+        <DataGrid x:Name="dataGrid_processes" HorizontalAlignment="Left" Margin="30,150,0,0" VerticalAlignment="Top" Width="470" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" CanUserAddRows="False" AlternatingRowBackground="#F2F2F2" RowBackground="#EFEFEF" Grid.Row="1" BorderThickness="0" HeadersVisibility="Column" >
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="BorderThickness" Value="0" />

@@ -1,4 +1,4 @@
-function Add-EvergreenApp()
+function Edit-EvergreenApp()
 {
     
     <#

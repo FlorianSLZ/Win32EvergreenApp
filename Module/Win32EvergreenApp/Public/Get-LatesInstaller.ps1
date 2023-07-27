@@ -57,7 +57,7 @@ function Get-LatesInstaller()
     }
     else
     {
-        Write-Waring "No new Version aviable."
+        Write-Host "No new Version aviable."
     }
 
 }

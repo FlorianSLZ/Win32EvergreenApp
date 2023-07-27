@@ -83,6 +83,42 @@ function Show-SettingsPopup {
     $null = $xamlContext.ShowDialog()
 }
 
+function Show-JsonEditor {
+    param (
+        [string]$AppInfo
+    )
+
+    # Read the XAML content from the file
+    $xamlFilePath = ".\xaml\editApp.xaml"
+    $xamlContent = Get-Content -Path $xamlFilePath -Raw
+
+    # Load the XAML content and create a form object
+    $JsonEditorWindow = [Windows.Markup.XamlReader]::Parse($xamlContent)
+
+    # Function to handle the Save button click event
+    $buttonSave_Click = {
+        # Get the JSON properties from the textboxes and convert them to a PowerShell object
+        $jsonObject = @{
+            "Name" = $JsonEditorWindow.textbox_Name.Text
+            "EvergreenName" = $JsonEditorWindow.textbox_EvergreenName.Text
+            # Add other JSON properties here
+        }
+
+        # Convert the PowerShell object back to JSON format
+        $updatedJson = $jsonObject | ConvertTo-Json -Depth 10
+
+        # Do something with the updated JSON, e.g., write to a file, display, etc.
+        Write-Host $updatedJson
+    }
+
+    # Assign the script block to the Save button click event
+    $JsonEditorWindow.button_Save.Add_Click($buttonSave_Click)
+
+    # Show the form
+    $JsonEditorWindow.ShowDialog()
+}
+
+
   
 ###########################################################################################################
 
@@ -110,6 +146,12 @@ $var_button_help.Add_Click{
 $var_button_settings.Add_Click{
     Show-SettingsPopup
 }
+
+$var_button_settings.Add_Click{
+    $AppInfo = Get-LocalEvergreenApp -AppName $($selectedName) -Meta
+    Show-editApp -AppInfo $AppInfo
+}
+
 
 $var_text_copyright.Text = "Florian Salzmann | scloud.work | v0.1"
 

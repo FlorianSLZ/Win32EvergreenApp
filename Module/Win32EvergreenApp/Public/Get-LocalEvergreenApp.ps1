@@ -22,9 +22,13 @@ function Get-LocalEvergreenApp()
         [ValidateNotNullOrEmpty()]
         [switch]$All, 
 
+        [parameter(Mandatory = $false, HelpMessage = "Get local Apps Metadate (AppInfo.json)")]
+        [ValidateNotNullOrEmpty()]
+        [switch]$Meta, 
+
         [parameter(Mandatory = $false, HelpMessage = "Local Name of the App/Folder")]
         [ValidateNotNullOrEmpty()]
-        [switch]$AppName,
+        [string]$AppName,
 
         [parameter(Mandatory = $false, HelpMessage = "Local repo Path where the Apps and template are stored")]
         [ValidateNotNullOrEmpty()]
@@ -40,10 +44,21 @@ function Get-LocalEvergreenApp()
     {
         $AllAppFolders = Get-ChildItem $RepoPath -Directory | Out-GridView -OutputMode Multiple
     }
+    elseif($AppName)
+    {
+        $AllAppFolders = Get-ChildItem $RepoPath -Directory | Where-Object{$_.Name -eq $AppName}
+    }
     else
     {
         $AllAppFolders = Get-ChildItem $RepoPath -Directory | Out-GridView -OutputMode Single
     }
 
-    return $AllAppFolders
+    if($Meta)
+    {
+        $AppInfo = Get-Content -Raw -Path "$($AllAppFolders.FullName)\AppInfo.json" | ConvertFrom-Json
+        return $AppInfo
+    }
+    else {
+        return $AllAppFolders
+    }
 }
