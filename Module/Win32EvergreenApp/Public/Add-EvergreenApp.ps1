@@ -85,7 +85,9 @@ function Add-EvergreenApp()
 
     if($AppInfo.Language){$Language = $AppInfo.Language}
     else{$Language = "MUI"}
-    $AppSavePath = "$RepoPath\$($AppInfo.Name) $($AppInfo.Architecture) $Language"
+    $CustomAppName = "$($AppInfo.Name) $($AppInfo.Architecture) $Language"
+    $AppInfo.Name = $CustomAppName
+    $AppSavePath = "$RepoPath\$CustomAppName"
 
     New-Item -Type Directory -Path $AppSavePath -Force | Out-Null
     Copy-Item -Path "$RepoPath\_template\*" -Destination "$AppSavePath\" -Recurse -Container -Force
